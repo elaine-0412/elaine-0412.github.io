@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>購物車</title>
+<style>
+    .container {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    .item {
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>我的購物車</h2>
+        <div class="item">
+            商品名稱: 商品A<br>
+            價格: $<span id="price">10.00</span><br>
+            數量: <button onclick="decrement()">-</button>
+                  <span id="quantity">1</span>
+                  <button onclick="increment()">+</button>
+        </div>
+        <div>
+            總金額: $<span id="total">10.00</span>
+        </div>
+    </div>
+
+    <script>
+        // 獲取元素
+        const quantityElement = document.getElementById('quantity');
+        const priceElement = document.getElementById('price');
+        const totalElement = document.getElementById('total');
+
+        // 初始化價格和數量，如果localStorage有存儲則從localStorage讀取，否則使用預設值
+        let price = parseFloat(priceElement.textContent);
+        let quantity = parseInt(localStorage.getItem('cartQuantity')) || 1;
+
+        // 更新顯示的數量和總金額
+        updateQuantityDisplay();
+        updateTotal();
+
+        // 加號按鈕點擊事件處理函數
+        function increment() {
+            quantity++;
+            updateQuantityDisplay();
+            updateTotal();
+            saveToLocalStorage();
+        }
+
+        // 減號按鈕點擊事件處理函數
+        function decrement() {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantityDisplay();
+                updateTotal();
+                saveToLocalStorage();
+            }
+        }
+
+        // 更新顯示的數量
+        function updateQuantityDisplay() {
+            quantityElement.textContent = quantity;
+        }
+
+        // 更新總金額
+        function updateTotal() {
+            const totalPrice = price * quantity;
+            totalElement.textContent = totalPrice.toFixed(2); // 保留兩位小數
+        }
+
+        // 將數量存儲到localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('cartQuantity', quantity);
+        }
+    </script>
+</body>
+</html>
